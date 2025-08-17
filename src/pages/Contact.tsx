@@ -1,6 +1,5 @@
 import React, { useState, FormEvent } from 'react';
 import { Mail, MapPin, Clock, Globe, ExternalLink } from 'lucide-react';
-import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,32 +8,6 @@ const Contact = () => {
     subject: '',
     message: ''
   });
-  const [status, setStatus] = useState('');
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-
-    try {
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          to_email: 'omega.bhasker@gmail.com'
-        },
-        'YOUR_PUBLIC_KEY'
-      );
-
-      setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      setStatus('error');
-    }
-  };
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -114,7 +87,7 @@ const Contact = () => {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Or use our contact form:</h3>
             </div>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Full Name
@@ -177,18 +150,10 @@ const Contact = () => {
 
               <button
                 type="submit"
-                disabled={status === 'sending'}
-                className="w-full bg-primary-600 text-white py-3 px-6 rounded-md hover:bg-primary-700 transition-colors disabled:bg-primary-400"
+                className="w-full bg-primary-600 text-white py-3 px-6 rounded-md hover:bg-primary-700 transition-colors"
               >
-                {status === 'sending' ? 'Sending...' : 'Send Message'}
+                Send Message
               </button>
-
-              {status === 'success' && (
-                <p className="text-green-600 text-center">Message sent successfully!</p>
-              )}
-              {status === 'error' && (
-                <p className="text-red-600 text-center">Failed to send message. Please try again.</p>
-              )}
             </form>
           </div>
         </div>
